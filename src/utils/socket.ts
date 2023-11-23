@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
   };
 
   if (!globalWithSocket.socket) {
-    globalWithSocket.socket = io('http://localhost:3000', {
+    globalWithSocket.socket = io(process.env.WEB_SOCKET_ENDPOINT as string, {
       transports: ['websocket'],
       upgrade: false,
     });
