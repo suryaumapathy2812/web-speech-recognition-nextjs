@@ -30,9 +30,6 @@ const MessageList = () => {
 
   }, [])
 
-
-
-
   return (
     <>
       <div className="flex flex-col space-y-8">
@@ -41,7 +38,7 @@ const MessageList = () => {
             <div key={index}>
               {item.role === 'assistant' && (
                 /* Chat message */
-                <div className="flex items-center w-3/4 mr-auto" >
+                <div className="flex items-start w-3/4 mr-auto" >
                   <div className="flex-shrink-0">
                     <p className='rounded-full bg-black text-white w-10 h-10 flex items-center justify-center'>
                       AI
@@ -55,7 +52,7 @@ const MessageList = () => {
 
               {item.role === 'user' && (
                 /* User message */
-                <div className="flex items-center justify-end  w-3/4 ml-auto">
+                <div className="flex items-start justify-end  w-3/4 ml-auto">
                   <div className="mr-4">
                     <p className="text-gray-600 text-left">{item.content}</p>
                   </div>
