@@ -18,7 +18,7 @@ async function Home() {
         <title>Chat</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-gray-100 flex min-h-screen flex-col justify-between p-6 md:p-24">
+      <main className="bg-gray-100 flex min-h-screen flex-col justify-between md:p-24">
 
         <div className="flex flex-col items-center justify-center  bg-gray-100">
 
