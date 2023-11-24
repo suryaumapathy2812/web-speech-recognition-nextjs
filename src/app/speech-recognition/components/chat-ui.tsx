@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import Head from 'next/head';
 import { useEffect, useRef, useState } from 'react';
-import { Socket, io } from 'socket.io-client';
 import { useUser } from '@auth0/nextjs-auth0/client'
 import socket from '@/utils/socket';
 
