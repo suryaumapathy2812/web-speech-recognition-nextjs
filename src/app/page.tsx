@@ -44,7 +44,7 @@ async function Home() {
             <Link
               key={i}
               href={"/" + _c.path}
-              className='w-full flex justify-center items-center hover:bg-green-950 hover:text-white'
+              className='flex-1 w-full flex justify-center items-center hover:bg-green-950 hover:text-white'
             >
               <div className={classNames(playfair.className, 'rounded-md border-gray-500 p-4  flex flex-col justify-center items-center')}>
 
