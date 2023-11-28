@@ -3,6 +3,11 @@
 import socket from "@/utils/socket";
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 import { useEffect, useState } from "react";
+import MarkdownPreview from '@uiw/react-markdown-preview';
+
+const Message = (props: Conversation) => {
+  return <MarkdownPreview className="!bg-transparent !text-gray-600 text-left" source={props.content} />
+}
 
 
 const MessageList = () => {
@@ -20,6 +25,21 @@ const MessageList = () => {
     }).reverse();
 
     setConversations(conv)
+  })
+
+  socket.on('user_connection_success', (response: { messages: ThreadMessage[], userSession: UserSession }) => {
+    console.log('[user_connection_success]', response);
+    const { messages, userSession: userSessionResponse } = response;
+
+    if (messages.length > 0) {
+      const conv = messages.map((thread: any) => {
+        return {
+          role: thread.role,
+          content: thread.content[0].text?.value
+        }
+      }).reverse();
+      setConversations(conv)
+    }
   })
 
   useEffect(() => {
@@ -45,7 +65,8 @@ const MessageList = () => {
                     </p>
                   </div>
                   <div className="ml-4">
-                    <p className="text-gray-600 text-left">{item.content}</p>
+                    {/* <p className="text-gray-600 text-left">{item.content}</p> */}
+                    <Message content={item.content} role={item.role} />
                   </div>
                 </div>
               )}
