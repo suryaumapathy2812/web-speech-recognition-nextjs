@@ -4,6 +4,7 @@ import './globals.css'
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Header from '@/components/header';
 import { ThemeProvider } from 'next-themes';
+import Sidebar from '@/components/sidebar';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({
         {/* <ThemeProvider defaultTheme="system" enableSystem={true} storageKey='theme' > */}
         <body className={inter.className}>
           {/* <Header /> */}
+          <Sidebar />
           {children}
         </body>
         {/* </ThemeProvider> */}

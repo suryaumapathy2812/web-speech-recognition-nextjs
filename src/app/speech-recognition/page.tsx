@@ -23,13 +23,11 @@ async function Home() {
               {/* Chat messages */}
               <MessageList />
 
-
               {/* Chat input */}
               <ChatPage />
             </div>
           </div>
         </div>
-
 
       </main>
     </>

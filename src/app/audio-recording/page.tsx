@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 
 import { Playfair_Display } from 'next/font/google'
 import { classNames } from "@/utils/utils";
-import Sidebar from './components/sidebar';
 
 const playfair = Playfair_Display({ subsets: ['latin'] })
 
@@ -19,7 +18,6 @@ async function Page() {
 
   return (
     <main className={classNames("relative bg-gray-100 text-black flex h-screen flex-col justify-between", playfair.className)}>
-      <Sidebar />
       <Core />
     </main>
   )
