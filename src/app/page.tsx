@@ -13,8 +13,8 @@ export default async function Home() {
 
   return (
     <main className="bg-gray-100 text-black flex h-screen flex-row justify-evenly p-24">
-      <Link href={"/speech-recognition"}>  Speech Recognition  </Link>
-      <Link href={"/audio-recording"}>  Audio-recording  </Link>
+      <Link href={"/speech-recognition"}>  Chat  </Link>
+      <Link href={"/audio-recording"}>  Audio </Link>
     </main>
   )
 }

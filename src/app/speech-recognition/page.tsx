@@ -1,10 +1,8 @@
-import { io } from "socket.io-client";
 import ChatPage from "./components/chat-ui";
 
 import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
-import Head from "next/head";
 import MessageList from "./components/message-list";
-import ConversationHistory from "./components/conversation-history";
+
 
 async function Home() {
 

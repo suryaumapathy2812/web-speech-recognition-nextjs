@@ -1,9 +1,29 @@
-import ChatPage from "./components/chat-ui";
 
-export default function Home() {
+import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
+import Core from './components/core';
+import { redirect } from "next/navigation";
+
+import { Playfair_Display } from 'next/font/google'
+import { classNames } from "@/utils/utils";
+import Sidebar from './components/sidebar';
+
+const playfair = Playfair_Display({ subsets: ['latin'] })
+
+async function Page() {
+
+  const session = await getSession();
+
+  if (!session) {
+    redirect('/api/auth/login');
+  }
+
   return (
-    <main className="bg-gray-100 flex h-screen flex-col justify-between p-24">
-      <ChatPage />
+    <main className={classNames("relative bg-gray-100 text-black flex h-screen flex-col justify-between", playfair.className)}>
+      <Sidebar />
+      <Core />
     </main>
   )
 }
+
+
+export default withPageAuthRequired(Page);
