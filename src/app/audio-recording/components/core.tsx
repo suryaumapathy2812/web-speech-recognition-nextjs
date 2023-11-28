@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useUser } from '@auth0/nextjs-auth0/client'
 import socket from '@/utils/socket';
+import { classNames } from "@/utils/utils";
 
 function Core() {
 
@@ -83,25 +84,39 @@ function Core() {
     }
   }
 
-
   if (error) return <div>{error.message}</div>;
   if (isLoading) return <div className="relative flex flex-col justify-center items-center h-full">{"Loading..."}</div>;
 
   return (
     <>
-      <div className="relative flex flex-col justify-center items-center h-full cursor-pointer"
+      <div
+        className={classNames(
+          "relative flex flex-col justify-center items-center h-full cursor-pointer",
+          !isRecording ? 'bg-white text-green-950' : 'bg-green-950 text-white'
+        )}
         onClick={handleToggleRecording}
       >
-        <h1 className="text-center text-4xl">
-          {isRecording ? "Listening..." : "Tap to speak"}
-        </h1>
 
-        {(isRecording || transcript) &&
-          <p className="text-center transcribing absolute bottom-20 bg-black text-white p-4 md:w-fit sm:w-screen md:max-w-3/6">
+        {
+          !isRecording && <h1 className="text-center text-4xl font-medium">
+            Tap to speak
+          </h1>
+        }
+
+        {
+          isRecording && <h1 className="text-center text-4xl font-medium">
+            Listening...
+          </h1>
+        }
+
+        {
+          (isRecording && transcript) &&
+          <p className="mt-4 rounded-md text-center bottom-20 text-white p-4 md:w-fit sm:w-screen md:max-w-3/6">
             {transcript}
           </p>
         }
-      </div >
+
+      </div>
     </>
   )
 

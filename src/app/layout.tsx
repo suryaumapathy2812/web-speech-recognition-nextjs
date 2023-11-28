@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import Header from '@/components/header';
-import { ThemeProvider } from 'next-themes';
 import Sidebar from '@/components/sidebar';
+import ConversationHistory from '@/components/conversation-history';
+import { classNames } from '@/utils/utils';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,13 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        {/* <ThemeProvider defaultTheme="system" enableSystem={true} storageKey='theme' > */}
-        <body className={inter.className}>
-          {/* <Header /> */}
-          <Sidebar />
+        <body className={classNames(inter.className, 'relative')}>
+          {/* <Sidebar /> */}
+          <ConversationHistory />
           {children}
         </body>
-        {/* </ThemeProvider> */}
       </UserProvider>
     </html>
   )

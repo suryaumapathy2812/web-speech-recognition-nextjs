@@ -1,20 +1,59 @@
 import Link from 'next/link'
 import { getSession } from '@auth0/nextjs-auth0';
-import { redirect } from "next/navigation"
+import { redirect } from "next/navigation";
+import { classNames } from '@/utils/utils';
+import { Playfair_Display } from 'next/font/google'
+import { Mic, Keyboard } from 'lucide-react';
+
+const playfair = Playfair_Display({ subsets: ['latin'] })
+
+const ConversationTypes = [
+  {
+    title: 'Text',
+    path: 'speech-recognition',
+    icon: Keyboard
+  },
+  {
+    title: 'Audio',
+    path: 'audio-recording',
+    icon: Mic
+  },
+]
+
+
 
 export default async function Home() {
 
   const session = await getSession();
   console.log('[session]', session);
 
+
   if (!session) {
     redirect('/api/auth/login');
   }
 
   return (
-    <main className="bg-gray-100 text-black flex h-screen flex-row justify-evenly p-24">
-      <Link href={"/speech-recognition"}>  Chat  </Link>
-      <Link href={"/audio-recording"}>  Audio </Link>
-    </main>
+    <main className="bg-gray-100 text-black flex flex-col md:flex-row h-screen justify-evenly">
+
+      {
+        ConversationTypes.map((_c, i) => (
+          <Link
+            key={i}
+            href={"/" + _c.path}
+            className='w-full flex justify-center items-center hover:bg-green-950 hover:text-white'
+          >
+            <div className={classNames(playfair.className, 'rounded-md border-gray-500 p-4  flex flex-col justify-center items-center')}>
+
+              <_c.icon className='w-6 h-6 mb-2' />
+
+              <h1 className='text-2xl'>
+                {_c.title}
+              </h1>
+            </div>
+          </Link>
+        ))
+      }
+
+    </main >
   )
 }
