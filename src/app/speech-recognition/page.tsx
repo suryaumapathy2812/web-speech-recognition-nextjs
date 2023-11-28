@@ -1,34 +1,25 @@
-import ChatPage from "./components/chat-ui";
-
+import { redirect } from "next/navigation";
 import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
-import MessageList from "./components/message-list";
+
+import { Playfair_Display } from 'next/font/google'
+import { classNames } from "@/utils/utils";
+import Core from "./components/core";
+
+const playfair = Playfair_Display({ subsets: ['latin'] });
 
 
 async function Home() {
 
   const session = await getSession();
 
-  if (!session?.user) return <div>{"Failed to load session"}</div>;
-
+  if (!session) {
+    redirect('/api/auth/login');
+  }
 
   return (
     <>
-      <main className="bg-gray-100 flex min-h-screen flex-col justify-between md:p-24">
-        <div className="flex flex-col items-center justify-center  bg-gray-100">
-
-          <div className="flex flex-col items-center justify-center w-full flex-1 px-4 md:px-20 text-center">
-            <h1 className="text-2xl md:text-4xl font-bold mb-8 text-black">Chat</h1>
-
-            <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
-              {/* Chat messages */}
-              <MessageList />
-
-              {/* Chat input */}
-              <ChatPage />
-            </div>
-          </div>
-        </div>
-
+      <main className={classNames("relative bg-gray-100 text-black flex h-screen flex-col justify-between", playfair.className)}>
+        <Core />
       </main>
     </>
   )

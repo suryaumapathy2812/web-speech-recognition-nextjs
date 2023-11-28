@@ -3,8 +3,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Sidebar from '@/components/sidebar';
-import ConversationHistory from '@/components/conversation-history';
+
 import { classNames } from '@/utils/utils';
+import ConversationHistory from '@/components/conversation-history';
 
 const inter = Inter({ subsets: ['latin'] })
 
