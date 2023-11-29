@@ -57,7 +57,7 @@ function Core() {
     recognitionRef.current.onresult = (event: any) => {
       const resultIndex = event.resultIndex;
       const transcript = event.results[resultIndex][0].transcript;
-      console.log(transcript);
+      console.log("transcript", transcript);
       setTranscript(transcript);
     }
 

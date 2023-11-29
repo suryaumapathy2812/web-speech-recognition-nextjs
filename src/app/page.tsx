@@ -5,7 +5,6 @@ import { classNames } from '@/utils/utils';
 import { Playfair_Display } from 'next/font/google'
 import { Mic, Keyboard } from 'lucide-react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import ConversationHistory from '@/components/conversation-history';
 
 const playfair = Playfair_Display({ subsets: ['latin'] })
 
@@ -35,7 +34,6 @@ async function Home() {
   }
 
   return (
-
     <>
       <main className="bg-gray-100 text-black flex flex-col md:flex-row h-screen justify-evenly">
 

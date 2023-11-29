@@ -5,6 +5,7 @@ import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.m
 import { useEffect, useState } from "react";
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Bot, User } from 'lucide-react';
+import { conversations, setConversations } from "@/utils/signals/conversation";
 
 
 const Message = (props: Conversation) => {
@@ -13,8 +14,6 @@ const Message = (props: Conversation) => {
 
 
 const MessageList = () => {
-
-  const [conversations, setConversations] = useState<Conversation[]>([]);
 
   socket.on('user_connection_success', (response: { messages: ThreadMessage[], userSession: UserSession }) => {
     console.log('[user_connection_success]', response);
@@ -31,32 +30,12 @@ const MessageList = () => {
     }
   })
 
-  socket.on('conversation_response', (response: ThreadMessage[]) => {
-    console.log('[GPT_RESPONSE]', response);
-
-    const _conversation = response.map((thread: any) => {
-      return {
-        role: thread.role,
-        content: thread.content[0].text?.value
-      }
-    }).reverse();
-
-    setConversations(_conversation)
-  })
-
-  useEffect(() => {
-    setConversations([{
-      role: 'assistant',
-      content: 'Hi, how can I help you?'
-    }])
-
-  }, [])
 
   return (
     <>
       <div className="flex flex-col space-y-8">
         {
-          conversations.map((item, index) => (
+          conversations.value.map((item, index) => (
             <div key={index}>
               {item.role === 'assistant' && (
                 /* Chat message */

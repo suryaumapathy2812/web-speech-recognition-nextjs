@@ -5,7 +5,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import Sidebar from '@/components/sidebar';
 
 import { classNames } from '@/utils/utils';
-import ConversationHistory from '@/components/conversation-history';
+import ConversationsDrawer from '@/components/conversations-drawer';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,7 +26,7 @@ export default function RootLayout({
       <UserProvider>
         <body className={classNames(inter.className, 'relative')}>
           {/* <Sidebar /> */}
-          <ConversationHistory />
+          <ConversationsDrawer />
           {children}
         </body>
       </UserProvider>

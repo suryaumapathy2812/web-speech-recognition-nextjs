@@ -5,7 +5,7 @@ const webSocketEndPoint = process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT as string;
 let socket: Socket;
 
 if (process.env.NODE_ENV === 'production') {
-  console.log(process.env);
+  console.log("env", process.env);
   socket = io(webSocketEndPoint, {
     transports: ['websocket'],
     upgrade: false,
