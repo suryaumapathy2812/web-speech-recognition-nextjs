@@ -1,48 +1,41 @@
 'use client';
 
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { Bot, User } from 'lucide-react';
 import { Signal } from "@preact/signals-core";
+import { classNames } from '@/utils/utils';
+import { Playfair } from 'next/font/google'
 
-const Message = (props: Conversation) => {
-  return <MarkdownPreview className="!bg-transparent !text-white text-left" source={props.content} />
-}
-
+const playfair = Playfair({ subsets: ['latin'] })
 
 const MessageList = ({ conversations }: { conversations: Signal<Conversation[]> }) => {
 
   return (
     <>
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col space-y-4">
         {
           conversations.value.map((item, index) => (
 
             <div key={index}>
               {item.role === 'assistant' && (
                 /* Chat message */
-                <div className="flex items-start w-3/4 mr-auto" >
-                  <div className="flex-shrink-0">
-                    <p className='rounded-full bg-black text-white w-10 h-10 flex items-center justify-center'>
-                      <Bot size={24} className="text-white" />
-                    </p>
-                  </div>
-                  <div className="ml-4 w-full">
-                    {/* <p className="text-gray-600 text-left">{item.content}</p> */}
-                    <Message content={item.content} role={item.role} />
+                <div className="flex items-end w-full">
+                  <div className="w-full">
+                    <h4 className={classNames(playfair.className, 'pt-4 pb-2 text-white text-xl sticky top-0 bg-green-950')}>
+                      Assistant
+                    </h4>
+                    <MarkdownPreview className="!z-[6] !bg-transparent !text-gray-400 text-left w-full" source={item.content} />
                   </div>
                 </div>
               )}
 
               {item.role === 'user' && (
                 /* User message */
-                <div className="flex items-start justify-end  w-3/4 ml-auto">
-                  <div className="mr-4 w-full">
-                    <p className="text-gray-400 text-left">{item.content}</p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <p className='rounded-full bg-black text-white w-10 h-10 flex items-center justify-center'>
-                      <User size={24} className="text-white" />
-                    </p>
+                <div className="flex items-end w-full">
+                  <div className="w-full">
+                    <h4 className={classNames(playfair.className, 'pt-4 pb-2 text-white text-xl sticky top-0 bg-green-950')}>
+                      User
+                    </h4>
+                    <p className="text-gray-400">{item.content}</p>
                   </div>
                 </div>
               )}
@@ -52,7 +45,7 @@ const MessageList = ({ conversations }: { conversations: Signal<Conversation[]> 
 
         }
 
-      </div>
+      </div >
     </>
   )
 
