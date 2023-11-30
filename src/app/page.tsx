@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import { getSession } from '@auth0/nextjs-auth0';
-import { redirect } from "next/navigation";
 import { classNames } from '@/utils/utils';
 import { Playfair_Display } from 'next/font/google'
 import { Mic, Keyboard } from 'lucide-react';
@@ -22,13 +20,6 @@ const ConversationTypes = [
 ]
 
 async function Home() {
-
-  const session = await getSession();
-  console.log('[session]', session);
-
-  if (!session) {
-    redirect('/api/auth/login');
-  }
 
   return (
     <>

@@ -14,35 +14,9 @@ const playfair = Playfair({ subsets: ['latin'] })
 
 function Core(props: { last_response: ReadonlySignal<Conversation> }) {
 
-  const { user, error, isLoading } = useUser();
   const userSession = useRef<UserSession | null>(null);
   const [input, setInput] = useState<string>("");
   const [response, setResponse] = useState<string>("");
-
-  useEffect(() => {
-
-    if (!socket.connected) {
-      socket.connect();
-      socket.emit('user_connected', user);
-    }
-
-    if (userSession.current === null) {
-      socket?.on('user_connection_success', (response: { message: Conversation[], userSession: UserSession }) => {
-        console.log('[user_connection_success]', response);
-        const { message, userSession: userSessionResponse } = response;
-        userSession.current = userSessionResponse;
-        socket?.emit('retrieve_messages', { userSession: userSession.current });
-      })
-    }
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    }
-
-  }, [user])
-
 
   function sendMessage(message: string) {
     console.debug('sendMessage', socket);

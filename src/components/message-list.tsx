@@ -26,7 +26,7 @@ const MessageList = ({ conversations }: { conversations: Signal<Conversation[]> 
                       <Bot size={24} className="text-white" />
                     </p>
                   </div>
-                  <div className="ml-4">
+                  <div className="ml-4 w-full">
                     {/* <p className="text-gray-600 text-left">{item.content}</p> */}
                     <Message content={item.content} role={item.role} />
                   </div>
@@ -36,7 +36,7 @@ const MessageList = ({ conversations }: { conversations: Signal<Conversation[]> 
               {item.role === 'user' && (
                 /* User message */
                 <div className="flex items-start justify-end  w-3/4 ml-auto">
-                  <div className="mr-4">
+                  <div className="mr-4 w-full">
                     <p className="text-gray-400 text-left">{item.content}</p>
                   </div>
                   <div className="flex-shrink-0">

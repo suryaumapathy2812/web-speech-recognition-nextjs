@@ -7,7 +7,9 @@ import { PanelRightOpen, PanelRightClose } from 'lucide-react'
 import MessageList from '@/components/message-list';
 import socket from '@/utils/socket';
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
-import { conversations, setConversations } from '@/utils/signals/conversation';
+import { conversations, setConversations } from '@/utils/signals/conversation.signal';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { redirect } from 'next/navigation';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,7 +18,12 @@ const playfair = Playfair_Display({ subsets: ['latin'] })
 
 const ConversationsDrawer = () => {
 
+  const { user, error, isLoading } = useUser();
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
+
+  if (error) {
+    redirect('/api/auth/login');
+  }
 
   const events = [
     'conversation_response',
@@ -69,7 +76,7 @@ const ConversationsDrawer = () => {
 
           <div className='absolute z-[5] w-screen h-screen backdrop-blur-md' onClick={toggleSidebarStatus}>
           </div>
-          <div className={classNames(inter.className, 'absolute right-0 h-screen overflow-y-auto bg-green-950 z-20 p-4 shadow-md', sidebarStatus ? 'w-screen md:w-2/6 lg:w-5/12 min-h-screen  ' : 'hidden')}>
+          <div className={classNames(inter.className, 'absolute flex flex-col right-0 h-screen overflow-y-auto bg-green-950 z-20 p-4 shadow-md', sidebarStatus ? 'w-screen md:w-2/6 lg:w-5/12 min-h-screen  ' : 'hidden')}>
 
             <div className='flex flex-row justify-between'>
               <h1 className={classNames(playfair.className, 'text-center text-2xl  text-white')}> Conversation </h1>
@@ -83,7 +90,7 @@ const ConversationsDrawer = () => {
               </button>
             </div>
 
-            <div className='mt-4'>
+            <div className='mt-4 overflow-y-auto flex-1'>
               <MessageList conversations={conversations} />
             </div>
 

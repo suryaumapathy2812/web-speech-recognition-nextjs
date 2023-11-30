@@ -6,6 +6,7 @@ import Sidebar from '@/components/sidebar';
 
 import { classNames } from '@/utils/utils';
 import ConversationsDrawer from '@/components/conversations-drawer';
+import SocketConnect from '@/components/socket-connect';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,8 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <UserProvider>
         <body className={classNames(inter.className, 'relative')}>
-          {/* <Sidebar /> */}
-          <ConversationsDrawer   />
+          <Sidebar />
+          <SocketConnect />
+          <ConversationsDrawer />
           {children}
         </body>
       </UserProvider>

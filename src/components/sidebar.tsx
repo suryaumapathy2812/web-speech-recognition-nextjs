@@ -13,9 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 const playfair = Playfair_Display({ subsets: ['latin'] })
 
 const Sidebar = () => {
-
   const { user, error, isLoading } = useUser();
-
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
 
   return (
@@ -54,7 +52,31 @@ const Sidebar = () => {
             </div>
 
             <div className='mt-4'>
-
+              <div>
+                {user ? (
+                  <div className="flex items-center">
+                    <img
+                      src={user.picture as string}
+                      alt={user.name as string}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    <span>{user.name}</span>
+                    <Link
+                      href={('/api/auth/logout')}
+                      className="ml-4 text-sm text-gray-300 hover:text-white"
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                ) : (
+                  <Link
+                    href={('/api/auth/login')}
+                    className="text-sm text-gray-300 hover:text-white"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
             </div>
 
           </div>
