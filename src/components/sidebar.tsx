@@ -37,7 +37,7 @@ const Sidebar = () => {
       {
         sidebarStatus &&
         <>
-          <div className='absolute z-1 w-screen h-screen backdrop-blur-md' onClick={toggleSidebarStatus}>
+          <div className='absolute z-[5] w-screen h-screen backdrop-blur-md' onClick={toggleSidebarStatus}>
           </div>
           <div className={classNames(inter.className, 'absolute left-0 h-screen overflow-y-auto bg-green-950 z-20 p-4 shadow-md', sidebarStatus ? 'w-screen md:w-2/6 lg:w-5/12 min-h-screen  ' : 'hidden')}>
 

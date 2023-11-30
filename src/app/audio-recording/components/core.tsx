@@ -19,6 +19,7 @@ function Core() {
     if (!socket.connected) {
       socket.connect();
       socket.emit('user_connected', user);
+
     }
 
     if (userSession.current === null) {
@@ -26,6 +27,7 @@ function Core() {
         console.log('[user_connection_success]', response);
         const { message, userSession: userSessionResponse } = response;
         userSession.current = userSessionResponse;
+        socket?.emit('retrieve_messages', { userSession: userSession.current });
       })
     }
 

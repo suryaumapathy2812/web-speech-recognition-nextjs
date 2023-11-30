@@ -21,13 +21,10 @@ const ConversationTypes = [
   },
 ]
 
-
-
 async function Home() {
 
   const session = await getSession();
   console.log('[session]', session);
-
 
   if (!session) {
     redirect('/api/auth/login');

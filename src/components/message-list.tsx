@@ -1,41 +1,22 @@
 'use client';
 
-import socket from "@/utils/socket";
-import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
-import { useEffect, useState } from "react";
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Bot, User } from 'lucide-react';
-import { conversations, setConversations } from "@/utils/signals/conversation";
-
+import { Signal } from "@preact/signals-core";
 
 const Message = (props: Conversation) => {
   return <MarkdownPreview className="!bg-transparent !text-white text-left" source={props.content} />
 }
 
 
-const MessageList = () => {
-
-  socket.on('user_connection_success', (response: { messages: ThreadMessage[], userSession: UserSession }) => {
-    console.log('[user_connection_success]', response);
-    const { messages, userSession: userSessionResponse } = response;
-
-    if (messages.length > 0) {
-      const conv = messages.map((thread: any) => {
-        return {
-          role: thread.role,
-          content: thread.content[0].text?.value
-        }
-      }).reverse();
-      setConversations(conv)
-    }
-  })
-
+const MessageList = ({ conversations }: { conversations: Signal<Conversation[]> }) => {
 
   return (
     <>
       <div className="flex flex-col space-y-8">
         {
           conversations.value.map((item, index) => (
+
             <div key={index}>
               {item.role === 'assistant' && (
                 /* Chat message */

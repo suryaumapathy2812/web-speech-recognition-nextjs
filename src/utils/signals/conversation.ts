@@ -1,6 +1,6 @@
 'use client';
 
-import { computed, signal } from "@preact/signals-core";
+import { computed, signal, Signal } from "@preact/signals-core";
 
 const conversations = signal<Conversation[]>([{
   role: 'assistant',
@@ -16,7 +16,7 @@ const setConversations = (conversationHistory: Conversation[]) => {
 }
 
 const lastResponse = computed(() => {
-  return conversations.value[0];
+  return conversations.value.reverse().filter((conversation) => conversation.role === 'assistant')[0];
 });
 
 

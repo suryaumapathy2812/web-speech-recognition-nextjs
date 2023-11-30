@@ -26,7 +26,7 @@ export default function RootLayout({
       <UserProvider>
         <body className={classNames(inter.className, 'relative')}>
           {/* <Sidebar /> */}
-          <ConversationsDrawer />
+          <ConversationsDrawer   />
           {children}
         </body>
       </UserProvider>

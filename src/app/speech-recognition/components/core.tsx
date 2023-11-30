@@ -7,11 +7,12 @@ import { useEffect, useRef, useState } from 'react';
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Playfair } from 'next/font/google';
+import { ReadonlySignal } from '@preact/signals-core'
 
 const playfair = Playfair({ subsets: ['latin'] })
 
 
-function Core() {
+function Core(props: { last_response: ReadonlySignal<Conversation> }) {
 
   const { user, error, isLoading } = useUser();
   const userSession = useRef<UserSession | null>(null);
@@ -30,6 +31,7 @@ function Core() {
         console.log('[user_connection_success]', response);
         const { message, userSession: userSessionResponse } = response;
         userSession.current = userSessionResponse;
+        socket?.emit('retrieve_messages', { userSession: userSession.current });
       })
     }
 
@@ -55,8 +57,6 @@ function Core() {
     setResponse(_conversation);
   })
 
-  if (error) return <div>{error.message}</div>;
-  if (isLoading) return <div className="relative flex flex-col justify-center items-center h-full">{"Loading..."}</div>;
 
   return (
     <>
@@ -76,7 +76,9 @@ function Core() {
             <MarkdownPreview
               className={classNames(
                 "mb-16 !bg-transparent !text-white text-left  overflow-y-auto"
-              )} source={response} />
+              )}
+              source={props.last_response?.value.content}
+            />
           }
 
           <input
