@@ -1,7 +1,6 @@
-import NextAuth, { NextAuthOptions, Session } from "next-auth"
-import { JWT } from "next-auth/jwt"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import { redirect } from "next/navigation";
+
 
 declare module "next-auth" {
   interface Session {

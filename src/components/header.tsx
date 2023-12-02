@@ -31,7 +31,7 @@ export default function Header() {
             <span>{user.user?.name}</span>
             <span>{user.user?.email}</span>
             <Link
-              href={('/api/auth/signout')}
+              href={('/server-logout')}
               className="ml-4 text-sm text-gray-300 hover:text-white"
             >
               Logout
@@ -39,7 +39,7 @@ export default function Header() {
           </div>
         ) : (
           <Link
-            href={('/api/auth/signin')}
+            href={('/server-login')}
             className="text-sm text-gray-300 hover:text-white"
           >
             Login
