@@ -2,21 +2,28 @@
 
 import socket from '@/utils/socket';
 import { classNames } from '@/utils/utils';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Playfair } from 'next/font/google';
-import { ReadonlySignal } from '@preact/signals-core'
 
-const playfair = Playfair({ subsets: ['latin'] })
+import useConversationStore from "@/utils/stores/conversation.store";
 
 
-function Core(props: { last_response: ReadonlySignal<Conversation> }) {
+const playfair = Playfair({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+})
+
+
+function Core() {
 
   const userSession = useRef<UserSession | null>(null);
   const [input, setInput] = useState<string>("");
   const [response, setResponse] = useState<string>("");
+  const { lastMessage } = useConversationStore();
+
 
   function sendMessage(message: string) {
     console.debug('sendMessage', socket);
@@ -51,7 +58,7 @@ function Core(props: { last_response: ReadonlySignal<Conversation> }) {
               className={classNames(
                 "mb-16 !bg-transparent !text-white text-left  overflow-y-auto"
               )}
-              source={props.last_response?.value.content}
+              source={lastMessage().content}
             />
           }
 

@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-import { useUser } from '@auth0/nextjs-auth0/client'
+import { useSession } from 'next-auth/react'
 import socket from '@/utils/socket';
 import { classNames } from "@/utils/utils";
-import { getUserSession, isSessionActive, setUserSession, userSession } from "@/utils/signals/session.signal";
+import useUserSessionStore from "@/utils/stores/session.store";
+import { redirect } from "next/navigation";
 
 function Core() {
 
-  const { user, error, isLoading } = useUser();
+  const { data: user, status } = useSession();
+  const { userSession } = useUserSessionStore();
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string | null>(null);
@@ -28,7 +30,7 @@ function Core() {
 
   function sendMessage(message: string) {
     console.debug('sendMessage', socket);
-    socket?.emit('message', { message, userSession: getUserSession });
+    socket?.emit('message', { message, userSession: userSession });
   }
 
   const startRecording = () => {
@@ -68,8 +70,8 @@ function Core() {
     }
   }
 
-  if (error) return <div>{error.message}</div>;
-  if (isLoading) return <div className="relative flex flex-col justify-center items-center h-full">{"Loading..."}</div>;
+  if (status === "unauthenticated") redirect('/api/auth/signin');
+  if (status === 'loading') return <div className="relative flex flex-col justify-center items-center h-full">{"Loading..."}</div>;
 
   return (
     <>

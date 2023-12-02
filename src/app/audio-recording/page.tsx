@@ -1,19 +1,23 @@
-
-import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import Core from './components/core';
 import { redirect } from "next/navigation";
+
+import { getServerSession } from "next-auth/next"
 
 import { Playfair_Display } from 'next/font/google'
 import { classNames } from "@/utils/utils";
 
-const playfair = Playfair_Display({ subsets: ['latin'] })
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+})
 
 async function Page() {
 
-  const session = await getSession();
+  const session = await getServerSession();
 
   if (!session) {
-    redirect('/api/auth/login');
+    redirect('/api/auth/signin');
   }
 
   return (
@@ -24,4 +28,4 @@ async function Page() {
 }
 
 
-export default withPageAuthRequired(Page);
+export default Page;

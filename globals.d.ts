@@ -19,3 +19,4 @@ interface Conversation {
   role: 'user' | 'assistant',
   content: string,
 }
+

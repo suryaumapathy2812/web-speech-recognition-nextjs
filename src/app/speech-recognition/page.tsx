@@ -1,29 +1,28 @@
-'use client';
-
 import { redirect } from "next/navigation";
 import { Playfair_Display } from 'next/font/google'
 import { classNames } from "@/utils/utils";
 import Core from "./components/core";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { lastResponse } from "@/utils/signals/conversation.signal";
 
-const playfair = Playfair_Display({ subsets: ['latin'] });
+import { getServerSession } from "next-auth/next"
 
-function Home() {
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+});
 
-  const { user, isLoading, error } = useUser();
+async function Home() {
 
-  if (error) {
+  const session = await getServerSession();
+
+  if (!session?.user) {
     redirect('/');
   }
-
-  if (isLoading) return <div className="relative flex flex-col justify-center items-center h-full">{"Loading..."}</div>;
-
 
   return (
     <>
       <main className={classNames("relative bg-gray-100 text-black flex h-screen flex-col justify-between", playfair.className)}>
-        <Core last_response={lastResponse} />
+        <Core />
       </main>
     </>
   )

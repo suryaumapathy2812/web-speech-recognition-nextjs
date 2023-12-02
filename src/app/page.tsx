@@ -1,10 +1,16 @@
+'use client'
+
 import Link from 'next/link'
 import { classNames } from '@/utils/utils';
 import { Playfair_Display } from 'next/font/google'
 import { Mic, Keyboard } from 'lucide-react';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useEffect } from 'react';
 
-const playfair = Playfair_Display({ subsets: ['latin'] })
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+})
 
 const ConversationTypes = [
   {
@@ -18,8 +24,15 @@ const ConversationTypes = [
     icon: Mic
   },
 ]
+function Home() {
 
-async function Home() {
+  // useEffect(() => {
+  //   if ('serviceWorker' in navigator) {
+  //     navigator.serviceWorker
+  //       .register('/sw.js')
+  //       .then((registration) => console.log('scope is: ', registration.scope));
+  //   }
+  // }, []);
 
   return (
     <>
@@ -44,9 +57,9 @@ async function Home() {
           ))
         }
 
-      </main >
+      </main>
     </>
   )
 }
 
-export default withPageAuthRequired(Home)
+export default Home

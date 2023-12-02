@@ -1,15 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useSession } from 'next-auth/react'
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default function Header() {
 
-  const { user, error, isLoading } = useUser();
+  const { data: user, status } = useSession();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  if (status === 'unauthenticated') redirect('/api/auth/signin');;
+  if (status === 'loading') return <div>Loading...</div>;
 
   console.log('[USER]', user);
 
@@ -22,14 +23,15 @@ export default function Header() {
       <div>
         {user ? (
           <div className="flex items-center">
-            <img
-              src={user.picture as string}
-              alt={user.name as string}
+            {/* <img
+              src={user.user?.image as string}
+              alt={user.user?.name as string}
               className="w-8 h-8 rounded-full mr-2"
-            />
-            <span>{user.name}</span>
+            /> */}
+            <span>{user.user?.name}</span>
+            <span>{user.user?.email}</span>
             <Link
-              href={('/api/auth/logout')}
+              href={('/api/auth/signout')}
               className="ml-4 text-sm text-gray-300 hover:text-white"
             >
               Logout
@@ -37,7 +39,7 @@ export default function Header() {
           </div>
         ) : (
           <Link
-            href={('/api/auth/login')}
+            href={('/api/auth/signin')}
             className="text-sm text-gray-300 hover:text-white"
           >
             Login

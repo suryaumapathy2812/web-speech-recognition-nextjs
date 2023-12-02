@@ -7,23 +7,28 @@ import { PanelRightOpen, PanelRightClose } from 'lucide-react'
 import MessageList from '@/components/message-list';
 import socket from '@/utils/socket';
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
-import { conversations, setConversations } from '@/utils/signals/conversation.signal';
-import { useUser } from '@auth0/nextjs-auth0/client';
+
+import useConversationStore from '@/utils/stores/conversation.store';
+
+import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation';
 
 
 const inter = Inter({ subsets: ['latin'] })
-const playfair = Playfair_Display({ subsets: ['latin'] })
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+})
 
 
 const ConversationsDrawer = () => {
 
-  const { user, error, isLoading } = useUser();
+  const { data: user, status } = useSession();
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
+  const { conversationList, syncMessages } = useConversationStore();
 
-  if (error) {
-    redirect('/api/auth/login');
-  }
+  if (status !== 'authenticated') return <></>;
 
   const events = [
     'conversation_response',
@@ -42,14 +47,13 @@ const ConversationsDrawer = () => {
       }).reverse()
 
       console.log('[GPT_RESPONSE]', _con);
-      setConversations(_con);
+      syncMessages(_con);
 
       console.log('[GPT_RESPONSE]', response);
       const recentResponse = (response[0] as any).content[0].text.value;
       console.log('recentResponse', recentResponse);
     })
   })
-
 
   return (
     <>
@@ -91,7 +95,7 @@ const ConversationsDrawer = () => {
             </div>
 
             <div className='mt-4 overflow-y-auto flex-1'>
-              <MessageList conversations={conversations} />
+              <MessageList conversations={conversationList} />
             </div>
 
           </div>

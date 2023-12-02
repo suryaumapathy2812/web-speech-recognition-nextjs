@@ -6,6 +6,7 @@ let socket: Socket;
 
 if (process.env.NODE_ENV === 'production') {
   socket = io(webSocketEndPoint, {
+    autoConnect: true,
     transports: ['websocket'],
     upgrade: false,
   });
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 
   if (!globalWithSocket.socket) {
     globalWithSocket.socket = io(webSocketEndPoint, {
+      autoConnect: true,
       transports: ['websocket'],
       upgrade: false,
     });

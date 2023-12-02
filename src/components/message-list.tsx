@@ -5,15 +5,19 @@ import { Signal } from "@preact/signals-core";
 import { classNames } from '@/utils/utils';
 import { Playfair } from 'next/font/google'
 
-const playfair = Playfair({ subsets: ['latin'] })
+const playfair = Playfair({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+})
 
-const MessageList = ({ conversations }: { conversations: Signal<Conversation[]> }) => {
+const MessageList = ({ conversations }: { conversations: Conversation[] }) => {
 
   return (
     <>
       <div className="flex flex-col space-y-4">
         {
-          conversations.value.map((item, index) => (
+          conversations.map((item, index) => (
 
             <div key={index}>
               {item.role === 'assistant' && (

@@ -1,20 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useSession } from 'next-auth/react'
 import { classNames } from '@/utils/utils';
 import { useToggle } from 'usehooks-ts'
 import { Inter, Playfair_Display } from 'next/font/google';
 import Link from 'next/link'
 import { PanelRightClose } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 
 const inter = Inter({ subsets: ['latin'] })
-const playfair = Playfair_Display({ subsets: ['latin'] })
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false
+})
 
 const Sidebar = () => {
-  const { user, error, isLoading } = useUser();
+  const { data: user, status } = useSession();
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
+  const router = useRouter();
+
+  if (status !== 'authenticated') return <></>;
 
   return (
     <>
@@ -56,13 +64,13 @@ const Sidebar = () => {
                 {user ? (
                   <div className="flex items-center">
                     <img
-                      src={user.picture as string}
-                      alt={user.name as string}
+                      src={user.user?.email as string}
+                      alt={user.user?.name as string}
                       className="w-8 h-8 rounded-full mr-2"
                     />
-                    <span>{user.name}</span>
+                    <span>{user.user?.name}</span>
                     <Link
-                      href={('/api/auth/logout')}
+                      href='/server-logout'
                       className="ml-4 text-sm text-gray-300 hover:text-white"
                     >
                       Logout
@@ -70,7 +78,7 @@ const Sidebar = () => {
                   </div>
                 ) : (
                   <Link
-                    href={('/api/auth/login')}
+                    href='/server-login'
                     className="text-sm text-gray-300 hover:text-white"
                   >
                     Login
