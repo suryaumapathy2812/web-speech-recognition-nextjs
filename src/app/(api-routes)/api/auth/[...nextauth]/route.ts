@@ -32,10 +32,6 @@ const authOptions: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn() {
-      console.log("signIn");
-      return true
-    },
     async session({ session, token, user }) {
       session.user.id = token.id;
       session.accessToken = token.accessToken;

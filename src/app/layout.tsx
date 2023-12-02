@@ -9,6 +9,7 @@ import ConversationsDrawer from '@/components/conversations-drawer';
 import SocketConnect from '@/components/socket-connect';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { getUserSession } from '@/utils/actions/redis';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,23 +27,23 @@ export default async function RootLayout({
 }) {
 
   const session = await getServerSession();
-  console.log('[SESSION]', session);
 
-  if (!session?.user) {
-    redirect('/server-login');
+  if (!session) {
+    redirect('/api/auth/signin');
   }
+
+  const userSession = await getUserSession(session.user.email);
 
   return (
     <html lang="en">
       <body className={classNames(inter.className, 'relative')}>
         <SessionProvider session={session}>
           <Sidebar />
+          {userSession && <SocketConnect userSession={userSession} />}
           <ConversationsDrawer />
-          <SocketConnect />
           {children}
         </SessionProvider>
       </body>
-
     </html>
   )
 }

@@ -24,11 +24,8 @@ const playfair = Playfair_Display({
 
 const ConversationsDrawer = () => {
 
-  const { data: user, status } = useSession();
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
   const { conversationList, syncMessages } = useConversationStore();
-
-  if (status !== 'authenticated') return <></>;
 
   const events = [
     'conversation_response',

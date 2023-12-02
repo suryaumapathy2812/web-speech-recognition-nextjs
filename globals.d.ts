@@ -5,7 +5,7 @@ interface Window {
 
 interface UserSession {
   user_id: string,
-  sessions: string[],
+  // sessions: string[],
   user: {
     name: string,
     email: string,
