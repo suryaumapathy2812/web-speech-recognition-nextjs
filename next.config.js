@@ -7,14 +7,19 @@ const nextConfig = {
     return [
       {
         source: '/server-login',
-        destination: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT : 'http://localhost:3000/auth/google',
+        destination: process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT}/auth/google` : 'http://localhost:3000/auth/google',
         permanent: false,
       },
       {
         source: '/server-logout',
-        destination: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT : 'http://localhost:3000/logout',
+        destination: process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT}/logout` : 'http://localhost:3000/logout',
         permanent: false,
       },
+      {
+        source: '/server-callback',
+        destination: process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT}/auth/google/callback` : 'http://localhost:3000/auth/google/callback',
+        permanent: false,
+      }
     ]
   },
   ...withPWA({
