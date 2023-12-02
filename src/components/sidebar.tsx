@@ -7,7 +7,7 @@ import { useToggle } from 'usehooks-ts'
 import { Inter, Playfair_Display } from 'next/font/google';
 import Link from 'next/link'
 import { PanelRightClose } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import useUserSessionStore from '@/utils/stores/session.store';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,9 +18,10 @@ const playfair = Playfair_Display({
 })
 
 const Sidebar = () => {
-  const { data: user, status } = useSession();
+
+  const { userSession } = useUserSessionStore();
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
-  const router = useRouter();
+  const { status } = useSession();
 
   if (status !== 'authenticated') return <></>;
 
@@ -61,16 +62,16 @@ const Sidebar = () => {
 
             <div className='mt-4'>
               <div>
-                {user ? (
+                {userSession ? (
                   <div className="flex items-center">
                     <img
-                      src={user.user?.email as string}
-                      alt={user.user?.name as string}
+                      src={userSession.user.picture as string}
+                      alt={userSession.user.name as string}
                       className="w-8 h-8 rounded-full mr-2"
                     />
-                    <span>{user.user?.name}</span>
+                    <span>{userSession.user?.name}</span>
                     <Link
-                      href='/server-logout'
+                      href='/api/auth/signout'
                       className="ml-4 text-sm text-gray-300 hover:text-white"
                     >
                       Logout
@@ -78,7 +79,7 @@ const Sidebar = () => {
                   </div>
                 ) : (
                   <Link
-                    href='/server-login'
+                    href='/api/auth/signin'
                     className="text-sm text-gray-300 hover:text-white"
                   >
                     Login

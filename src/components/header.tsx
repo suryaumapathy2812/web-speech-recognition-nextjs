@@ -39,7 +39,7 @@ export default function Header() {
           </div>
         ) : (
           <Link
-            href={('/api/auth/signout')}
+            href={('/api/auth/signin')}
             className="text-sm text-gray-300 hover:text-white"
           >
             Login

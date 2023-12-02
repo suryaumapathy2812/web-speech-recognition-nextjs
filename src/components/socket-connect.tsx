@@ -17,12 +17,12 @@ function SocketConnect(props: { userSession: UserSession }) {
   useEffect(() => {
     const message = async () => {
       console.log("USER_SESSION: ", props.userSession);
+      setUserSession(props.userSession);
       const messages = await listMessages(props.userSession.thread.id);
       syncMessages(messages.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })));
     }
     message();
   }, []);
-
 
 
   return <></>
