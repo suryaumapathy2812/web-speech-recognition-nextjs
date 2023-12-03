@@ -1,6 +1,8 @@
 'use server';
 
 import { Redis } from "ioredis";
+import { getServerSession } from "next-auth";
+import { initializeThread } from "./assistant";
 
 
 const $REDIS_CLIENT = new Redis(process.env.REDIS_URL as string);
@@ -24,11 +26,26 @@ export async function createUserSession(email: string, newSession: UserSession):
  * @returns 
  */
 export async function getUserSession(email: string): Promise<UserSession | null> {
-  const sessions = await $REDIS_CLIENT.get(email);
+  const ifSessionExist = await $REDIS_CLIENT.get(email);
   // console.debug("[GET_USER_SESSION]", sessions);
-  if (sessions)
-    return JSON.parse(sessions);
-  return null
+
+  if (!ifSessionExist) {
+    console.log("[GET_USER_SESSION] No session found for", email);
+
+    const serverAuthSession = await getServerSession();
+    const newThread = await initializeThread();
+
+    const newSession: any = {
+      user: serverAuthSession?.user,
+      thread: newThread,
+      user_id: email
+    }
+
+    await createUserSession(email, newSession);
+  }
+
+  const sessions = await $REDIS_CLIENT.get(email);
+  return sessions ? JSON.parse(sessions) : null;
 }
 
 

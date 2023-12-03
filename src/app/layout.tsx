@@ -34,6 +34,7 @@ export default async function RootLayout({
   }
 
   const userSession = await getUserSession(session.user.email);
+  console.log("USER_SESSION: ", userSession);
 
   return (
     <html lang="en">

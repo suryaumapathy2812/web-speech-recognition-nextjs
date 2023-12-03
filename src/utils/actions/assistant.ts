@@ -120,7 +120,7 @@ async function listMessages(threadId: string) {
 
 
 
-export { sendMessage, listMessages }
+export { initializeThread, sendMessage, listMessages }
 
 // const json = [
 //   {
