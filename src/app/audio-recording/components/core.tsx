@@ -3,20 +3,30 @@
 import { useEffect, useRef, useState } from "react";
 import { classNames } from "@/utils/utils";
 import useUserSessionStore from "@/utils/stores/session.store";
-import { redirect } from "next/navigation";
 import { sendMessage as addMessageToThread } from "@/utils/actions/assistant"
 import useConversationStore from "@/utils/stores/conversation.store";
+import { Inter } from "next/font/google";
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
+const inter = Inter(
+  {
+    subsets: ['latin'],
+    display: 'swap',
+    adjustFontFallback: false
+  }
+)
 
 function Core() {
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [transcript, setTranscript] = useState<string | null>(null);
   const recognitionRef = useRef<any>(null);
 
   const { userSession } = useUserSessionStore();
   const [response, setResponse] = useState<string>("");
-  const { syncMessages } = useConversationStore();
+  const { lastMessage, syncMessages } = useConversationStore();
+
+  const currentTranscriptRef = useRef<string>('');
+
 
   useEffect(() => {
 
@@ -31,13 +41,13 @@ function Core() {
 
 
   async function sendMessage(message: string) {
+    console.log("[SENDING MESSAGE]====================================")
+    console.log(message);
     const response = await addMessageToThread(userSession?.thread.id, message);
     console.log("RESPONSE: ", response);
     syncMessages(response.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })))
     setResponse((response[0].content[0] as any).text.value);
-    setTranscript(null);
-    // console.debug('sendMessage', socket);
-    // socket?.emit('message', { message, userSession: userSession });
+    // setFinalTranscript(null);
   }
 
   const startRecording = () => {
@@ -47,29 +57,33 @@ function Core() {
     recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
 
-    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+    recognitionRef.current.onresult = async (event: SpeechRecognitionEvent) => {
       const list = event.results.item(0);
-      const { isFinal, item } = list
-      const result = item(0);
+      console.log("list", list)
+      const { isFinal } = list;
+      const result = list.item(0);
       const transcript = result.transcript;
       console.log("transcript", transcript);
-      setTranscript(transcript);
+      currentTranscriptRef.current = transcript;
       if (isFinal) {
-        stopRecording();
+        await stopRecording();
+        return;
       }
     }
 
     recognitionRef.current.start();
   }
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      setIsRecording(false);
-      if (!transcript)
-        return;
-      sendMessage(transcript);
-      setTranscript(null);
+      setTimeout(() => {
+        setIsRecording(false);
+        currentTranscriptRef.current = '';
+      }, 1000);
+      console.log("[STOP RECORDING]", currentTranscriptRef.current);
+      if (currentTranscriptRef.current.trim() === '') return;
+      await sendMessage(currentTranscriptRef.current);
     }
   }
 
@@ -92,12 +106,6 @@ function Core() {
         onClick={handleToggleRecording}
       >
 
-        {response &&
-          <p className="mt-4 rounded-md text-center bottom-20 text-white p-4 md:w-fit sm:w-screen md:max-w-3/6">
-            {response}
-          </p>
-        }
-
         {
           !isRecording && <h1 className="text-center text-4xl font-medium">
             Tap to speak
@@ -111,9 +119,25 @@ function Core() {
         }
 
         {
-          (isRecording && transcript) &&
-          <p className="mt-4 rounded-md text-center bottom-20 text-white p-4 md:w-fit sm:w-screen md:max-w-3/6">
-            {transcript}
+          (!isRecording) &&
+          <p
+            suppressHydrationWarning={true}
+            className={classNames("mt-4 rounded-md text-center bottom-20 font-medium p-4 w-screen md:w-3/6", inter.className)}>
+            {/* {response} */}
+
+            <MarkdownPreview
+              className={classNames(
+                "mb-16 !bg-white !text-black text-left  overflow-y-auto"
+              )}
+              source={lastMessage().content}
+            />
+          </p>
+        }
+
+        {
+          (isRecording) &&
+          <p className={classNames("mt-4 rounded-md text-center bottom-20 font-medium p-4 w-screen md:w-3/6", inter.className)}>
+            {currentTranscriptRef.current}
           </p>
         }
 

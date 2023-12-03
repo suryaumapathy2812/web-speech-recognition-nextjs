@@ -42,9 +42,9 @@ export const authOptions: NextAuthOptions = {
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken as string;
 
-      console.log("session", session);
-      console.log("token", token);
-      console.log("user", user);
+      // console.log("session", session);
+      // console.log("token", token);
+      // console.log("user", user);
 
       return session;
     },

@@ -5,7 +5,10 @@ import { google } from 'googleapis';
 import { getServerSession } from 'next-auth';
 
 async function initializeAuth() {
-  const oauth2Client = new google.auth.OAuth2();
+  const oauth2Client = new google.auth.OAuth2({
+    clientId: process.env.GOOGLE_CLIENT_ID as string,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+  });
   const session = (await getServerSession(authOptions));
 
   const accessToken = session?.accessToken;
@@ -85,6 +88,7 @@ export async function listEmail(query: string = '', maxResults: number = 10, lab
     return finalMessageResponse;
   } catch (error) {
     console.log('The API returned an error: ' + error);
+    return [];
   }
 
 }

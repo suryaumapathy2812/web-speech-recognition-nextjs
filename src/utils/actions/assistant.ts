@@ -17,7 +17,7 @@ async function initializeThread() {
   }
 }
 
-export async function sendMessage(threadId: string, message: string) {
+async function sendMessage(threadId: string, message: string) {
   try {
     await waitForRunCompletion(threadId);
 
@@ -33,6 +33,8 @@ export async function sendMessage(threadId: string, message: string) {
 
     await processRunActions(threadId, runResponse);
 
+    await waitForRunCompletion(threadId);
+
     return await listMessages(threadId);
   } catch (error) {
     console.error("[ERROR] Failed to send message:", error);
@@ -41,6 +43,7 @@ export async function sendMessage(threadId: string, message: string) {
 }
 
 async function waitForRunCompletion(threadId: string) {
+  console.log("Processing run actions")
   let runs = await $OPEN_AI.beta.threads.runs.list(threadId);
   let activeOrPendingRun = runs.data.find(run => run.status === 'queued' || run.status === 'in_progress' || run.status === 'requires_action');
 
@@ -57,15 +60,16 @@ async function waitForRunCompletion(threadId: string) {
 }
 
 async function processRunActions(threadId: string, runResponse: Run) {
+  console.log("Processing run actions")
   let retrievedRun = await $OPEN_AI.beta.threads.runs.retrieve(threadId, runResponse.id);
+
+  if (retrievedRun.status === 'requires_action' && retrievedRun.required_action?.submit_tool_outputs.tool_calls) {
+    await handleToolCalls(threadId, runResponse, retrievedRun.required_action.submit_tool_outputs.tool_calls);
+  }
 
   while (retrievedRun.status === 'queued' || retrievedRun.status === 'in_progress') {
     await new Promise(resolve => setTimeout(resolve, 100));
     retrievedRun = await $OPEN_AI.beta.threads.runs.retrieve(threadId, runResponse.id);
-  }
-
-  if (retrievedRun.status === 'requires_action' && retrievedRun.required_action?.submit_tool_outputs.tool_calls) {
-    await handleToolCalls(threadId, runResponse, retrievedRun.required_action.submit_tool_outputs.tool_calls);
   }
 }
 
@@ -104,8 +108,7 @@ async function handleToolCalls(threadId: string, runResponse: Run, toolCalls: an
   }
 }
 
-
-export async function listMessages(threadId: string) {
+async function listMessages(threadId: string) {
   try {
     const messages = await $OPEN_AI.beta.threads.messages.list(threadId);
     return messages.data;
@@ -115,6 +118,9 @@ export async function listMessages(threadId: string) {
   }
 }
 
+
+
+export { sendMessage, listMessages }
 
 // const json = [
 //   {
