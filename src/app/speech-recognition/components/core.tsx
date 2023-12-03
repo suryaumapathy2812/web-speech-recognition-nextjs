@@ -1,7 +1,7 @@
 'use client';
 
 import { classNames } from '@/utils/utils';
-import {  useState } from 'react';
+import { useState } from 'react';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Playfair } from 'next/font/google';
 
@@ -37,7 +37,7 @@ function Core() {
     <>
       <div
         className={classNames(
-          "bg-green-950 relative flex flex-col justify-center items-center h-full",
+          "bg-green-950 relative flex flex-col justify-center items-center h-screen",
         )}
       >
 

@@ -21,7 +21,7 @@ async function Page() {
   }
 
   return (
-    <main className={classNames("relative bg-gray-100 text-black flex h-full flex-col justify-between", playfair.className)}>
+    <main className={classNames("relative bg-gray-100 text-black flex h-screen max-h-full flex-col justify-between", playfair.className)}>
       <Core />
     </main>
   )

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-import { useSession } from 'next-auth/react'
 import { classNames } from "@/utils/utils";
 import useUserSessionStore from "@/utils/stores/session.store";
 import { redirect } from "next/navigation";
@@ -15,10 +14,9 @@ function Core() {
   const [transcript, setTranscript] = useState<string | null>(null);
   const recognitionRef = useRef<any>(null);
 
-
   const { userSession } = useUserSessionStore();
   const [response, setResponse] = useState<string>("");
-  const { lastMessage, syncMessages } = useConversationStore();
+  const { syncMessages } = useConversationStore();
 
   useEffect(() => {
 
@@ -49,11 +47,16 @@ function Core() {
     recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
 
-    recognitionRef.current.onresult = (event: any) => {
-      const resultIndex = event.resultIndex;
-      const transcript = event.results[resultIndex][0].transcript;
+    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+      const list = event.results.item(0);
+      const { isFinal, item } = list
+      const result = item(0);
+      const transcript = result.transcript;
       console.log("transcript", transcript);
       setTranscript(transcript);
+      if (isFinal) {
+        stopRecording();
+      }
     }
 
     recognitionRef.current.start();
@@ -79,9 +82,6 @@ function Core() {
     }
   }
 
-  if (status === "unauthenticated") redirect('/api/auth/signin');
-  if (status === 'loading') return <div className="relative flex flex-col justify-center items-center h-full">{"Loading..."}</div>;
-
   return (
     <>
       <div
@@ -91,6 +91,12 @@ function Core() {
         )}
         onClick={handleToggleRecording}
       >
+
+        {response &&
+          <p className="mt-4 rounded-md text-center bottom-20 text-white p-4 md:w-fit sm:w-screen md:max-w-3/6">
+            {response}
+          </p>
+        }
 
         {
           !isRecording && <h1 className="text-center text-4xl font-medium">

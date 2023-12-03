@@ -1,7 +1,10 @@
 interface Window {
   SpeechRecognition: typeof SpeechRecognition;
   webkitSpeechRecognition: typeof SpeechRecognition;
+  webkitAudioContext: typeof AudioContext;
 }
+
+
 
 interface UserSession {
   user_id: string,
