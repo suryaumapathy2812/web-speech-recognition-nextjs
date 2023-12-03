@@ -2,19 +2,23 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSession } from 'next-auth/react'
-import socket from '@/utils/socket';
 import { classNames } from "@/utils/utils";
 import useUserSessionStore from "@/utils/stores/session.store";
 import { redirect } from "next/navigation";
+import { sendMessage as addMessageToThread } from "@/utils/actions/assistant"
+import useConversationStore from "@/utils/stores/conversation.store";
+
 
 function Core() {
-
-  const { data: user, status } = useSession();
-  const { userSession } = useUserSessionStore();
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string | null>(null);
   const recognitionRef = useRef<any>(null);
+
+
+  const { userSession } = useUserSessionStore();
+  const [response, setResponse] = useState<string>("");
+  const { lastMessage, syncMessages } = useConversationStore();
 
   useEffect(() => {
 
@@ -25,12 +29,17 @@ function Core() {
       }
     }
 
-  }, [user])
+  }, [userSession])
 
 
-  function sendMessage(message: string) {
-    console.debug('sendMessage', socket);
-    socket?.emit('message', { message, userSession: userSession });
+  async function sendMessage(message: string) {
+    const response = await addMessageToThread(userSession?.thread.id, message);
+    console.log("RESPONSE: ", response);
+    syncMessages(response.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })))
+    setResponse((response[0].content[0] as any).text.value);
+    setTranscript(null);
+    // console.debug('sendMessage', socket);
+    // socket?.emit('message', { message, userSession: userSession });
   }
 
   const startRecording = () => {

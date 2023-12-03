@@ -1,6 +1,6 @@
 'use server';
 
-import { authOptions } from '@/app/(api-routes)/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/(api-routes)/api/auth/[...nextauth]/config';
 import { google } from 'googleapis';
 import { getServerSession } from 'next-auth';
 
