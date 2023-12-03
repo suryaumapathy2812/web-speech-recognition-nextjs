@@ -8,6 +8,7 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import Link from 'next/link'
 import { PanelRightClose } from 'lucide-react';
 import useUserSessionStore from '@/utils/stores/session.store';
+import Policy from './policy';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -65,7 +66,7 @@ const Sidebar = () => {
                 {userSession ? (
                   <div className="flex items-center">
                     <img
-                      src={userSession.user.picture as string}
+                      src={userSession.user.image as string}
                       alt={userSession.user.name as string}
                       className="w-8 h-8 rounded-full mr-2"
                     />
@@ -88,7 +89,9 @@ const Sidebar = () => {
               </div>
             </div>
 
+            <Policy />
           </div>
+
         </>
       }
 
