@@ -12,7 +12,7 @@ export default function Header() {
   if (status === 'unauthenticated') redirect('/api/auth/signin');;
   if (status === 'loading') return <div>Loading...</div>;
 
-  console.log('[USER]', user);
+  // console.log('[USER]', user);
 
   return (
     user &&

@@ -43,7 +43,7 @@ async function sendMessage(threadId: string, message: string) {
 }
 
 async function waitForRunCompletion(threadId: string) {
-  console.log("Processing run actions")
+  // console.log("Processing run actions")
   let runs = await $OPEN_AI.beta.threads.runs.list(threadId);
   let activeOrPendingRun = runs.data.find(run => run.status === 'queued' || run.status === 'in_progress' || run.status === 'requires_action');
 
@@ -60,7 +60,7 @@ async function waitForRunCompletion(threadId: string) {
 }
 
 async function processRunActions(threadId: string, runResponse: Run) {
-  console.log("Processing run actions")
+  // console.log("Processing run actions")
   let retrievedRun = await $OPEN_AI.beta.threads.runs.retrieve(threadId, runResponse.id);
 
   if (retrievedRun.status === 'requires_action' && retrievedRun.required_action?.submit_tool_outputs.tool_calls) {

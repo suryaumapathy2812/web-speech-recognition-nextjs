@@ -19,7 +19,7 @@ const useConversationStore = create<ConversationState>((set, get) => ({
   },
 
   lastMessage: () => {
-    return get().conversationList.reverse().filter((message) => message.role === 'assistant')[0]
+    return get().conversationList.filter((message) => message.role === 'assistant')[0]
   },
 
   syncMessages: (messageHistory) => set({ conversationList: messageHistory }),

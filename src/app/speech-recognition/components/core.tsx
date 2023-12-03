@@ -26,7 +26,7 @@ function Core() {
 
   async function sendMessage(message: string) {
     const response = await addMessageToThread(userSession?.thread.id, message);
-    console.log("RESPONSE: ", response);
+    // console.log("RESPONSE: ", response);
     syncMessages(response.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })))
     setResponse((response[0].content[0] as any).text.value);
     setInput('');

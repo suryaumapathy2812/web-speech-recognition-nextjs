@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 const ConversationsDrawer = () => {
 
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
-  const { conversationList, syncMessages } = useConversationStore();
+  const { conversationList } = useConversationStore();
 
 
   return (

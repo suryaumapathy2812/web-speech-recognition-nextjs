@@ -41,11 +41,11 @@ function Core() {
 
 
   async function sendMessage(message: string) {
-    console.log("[SENDING MESSAGE]====================================")
-    console.log(message);
+    // console.log("[SENDING MESSAGE]====================================")
+    // console.log(message);
     const response = await addMessageToThread(userSession?.thread.id, message);
-    console.log("RESPONSE: ", response);
-    syncMessages(response.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })))
+    // console.log("RESPONSE: ", response);
+    syncMessages(response.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })));
     setResponse((response[0].content[0] as any).text.value);
     // setFinalTranscript(null);
   }
@@ -59,11 +59,11 @@ function Core() {
 
     recognitionRef.current.onresult = async (event: SpeechRecognitionEvent) => {
       const list = event.results.item(0);
-      console.log("list", list)
+      // console.log("list", list)
       const { isFinal } = list;
       const result = list.item(0);
       const transcript = result.transcript;
-      console.log("transcript", transcript);
+      // console.log("transcript", transcript);
       currentTranscriptRef.current = transcript;
       if (isFinal) {
         await stopRecording();
@@ -81,7 +81,7 @@ function Core() {
         setIsRecording(false);
         currentTranscriptRef.current = '';
       }, 1000);
-      console.log("[STOP RECORDING]", currentTranscriptRef.current);
+      // console.log("[STOP RECORDING]", currentTranscriptRef.current);
       if (currentTranscriptRef.current.trim() === '') return;
       await sendMessage(currentTranscriptRef.current);
     }
