@@ -1,6 +1,5 @@
 'use client';
 
-import socket from '@/utils/socket';
 import useUserSessionStore from '@/utils/stores/session.store';
 import { useSession } from 'next-auth/react';
 import { useEffect } from "react";

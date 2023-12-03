@@ -1,14 +1,13 @@
 'use client';
 
-import socket from '@/utils/socket';
 import { classNames } from '@/utils/utils';
-import { useRef, useState } from 'react';
-import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
+import {  useState } from 'react';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Playfair } from 'next/font/google';
 
 import useConversationStore from "@/utils/stores/conversation.store";
-
+import useUserSessionStore from '@/utils/stores/session.store';
+import { sendMessage as addMessageToThread } from "@/utils/actions/assistant"
 
 const playfair = Playfair({
   subsets: ['latin'],
@@ -19,24 +18,19 @@ const playfair = Playfair({
 
 function Core() {
 
-  const userSession = useRef<UserSession | null>(null);
+  const { userSession } = useUserSessionStore();
   const [input, setInput] = useState<string>("");
   const [response, setResponse] = useState<string>("");
-  const { lastMessage } = useConversationStore();
+  const { lastMessage, syncMessages } = useConversationStore();
 
 
-  function sendMessage(message: string) {
-    console.debug('sendMessage', socket);
-    socket?.emit('message', { message, userSession: userSession.current });
+  async function sendMessage(message: string) {
+    const response = await addMessageToThread(userSession?.thread.id, message);
+    console.log("RESPONSE: ", response);
+    syncMessages(response.map((mess) => ({ content: (mess.content[0] as any).text.value, role: mess.role })))
+    setResponse((response[0].content[0] as any).text.value);
     setInput('');
   }
-
-  socket.on('conversation_response', (response: ThreadMessage[]) => {
-    console.debug('[GPT_RESPONSE]', response);
-
-    const _conversation = (response[0].content[0] as any).text?.value;
-    setResponse(_conversation);
-  })
 
 
   return (

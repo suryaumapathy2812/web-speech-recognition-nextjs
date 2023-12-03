@@ -25,7 +25,7 @@ export async function createUserSession(email: string, newSession: UserSession):
  */
 export async function getUserSession(email: string): Promise<UserSession | null> {
   const sessions = await $REDIS_CLIENT.get(email);
-  console.debug("[GET_USER_SESSION]", sessions);
+  // console.debug("[GET_USER_SESSION]", sessions);
   if (sessions)
     return JSON.parse(sessions);
   return null
