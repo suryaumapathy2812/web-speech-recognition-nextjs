@@ -1,11 +1,11 @@
-import NextAuth, { NextAuthOptions, Session } from "next-auth"
-import { JWT } from "next-auth/jwt"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import { redirect } from "next/navigation";
+
 
 declare module "next-auth" {
   interface Session {
     accessToken: string;
+    refreshToken: string;
     user: {
       name: string;
       email: string;
@@ -23,23 +23,27 @@ declare module "next-auth/jwt" {
 
 
 /** @type {*} */
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          scope: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/gmail.readonly",
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      }
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn() {
-      console.log("signIn");
-      return true
-    },
     async session({ session, token, user }) {
       session.user.id = token.id;
       session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken as string;
 
       console.log("session", session);
       console.log("token", token);
@@ -54,6 +58,10 @@ const authOptions: NextAuthOptions = {
       if (account && account.access_token) {
         token.accessToken = account.access_token;
       }
+      if (account && account.refresh_token) {
+        token.refreshToken = account.refresh_token;
+      }
+
       return token;
     },
   }

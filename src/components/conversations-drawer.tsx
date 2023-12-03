@@ -5,14 +5,8 @@ import { useToggle } from 'usehooks-ts';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { PanelRightOpen, PanelRightClose } from 'lucide-react'
 import MessageList from '@/components/message-list';
-import socket from '@/utils/socket';
-import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
 
 import useConversationStore from '@/utils/stores/conversation.store';
-
-import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation';
-
 
 const inter = Inter({ subsets: ['latin'] })
 const playfair = Playfair_Display({
@@ -24,36 +18,9 @@ const playfair = Playfair_Display({
 
 const ConversationsDrawer = () => {
 
-  const { data: user, status } = useSession();
   const [sidebarStatus, toggleSidebarStatus, setSidebarStatus] = useToggle(false);
   const { conversationList, syncMessages } = useConversationStore();
 
-  if (status !== 'authenticated') return <></>;
-
-  const events = [
-    'conversation_response',
-    'retrieve_messages_success'
-  ]
-
-  events.forEach((event) => {
-    socket.on(event, (response: ThreadMessage[]) => {
-      console.log('[conversation_responses]', response);
-
-      const _con = response.map((thread: any) => {
-        return {
-          role: thread.role,
-          content: thread.content[0].text?.value
-        }
-      }).reverse()
-
-      console.log('[GPT_RESPONSE]', _con);
-      syncMessages(_con);
-
-      console.log('[GPT_RESPONSE]', response);
-      const recentResponse = (response[0] as any).content[0].text.value;
-      console.log('recentResponse', recentResponse);
-    })
-  })
 
   return (
     <>
