@@ -4,8 +4,6 @@ interface Window {
   webkitAudioContext: typeof AudioContext;
 }
 
-
-
 interface UserSession {
   user_id: string,
   // sessions: string[],
@@ -17,9 +15,7 @@ interface UserSession {
   thread: any
 }
 
-
 interface Conversation {
   role: 'user' | 'assistant',
   content: string,
 }
-

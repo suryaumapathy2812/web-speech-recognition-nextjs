@@ -1977,6 +1977,15 @@ axe-core@=4.7.0:
   resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.7.0.tgz"
   integrity sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==
 
+axios@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.2.tgz#de67d42c755b571d3e698df1b6504cde9b0ee9f2"
+  integrity sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
 axobject-query@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/axobject-query/-/axobject-query-3.2.1.tgz"
@@ -2375,6 +2384,11 @@ core-js-compat@^3.31.0, core-js-compat@^3.33.1:
   integrity sha512-cNzGqFsh3Ot+529GIXacjTJ7kegdt5fPXxCBVS1G0iaZpuo/tBz399ymceLJveQhFFZ8qThHiP3fzuoQjKN2ow==
   dependencies:
     browserslist "^4.22.1"
+
+core-js@^3.6.5:
+  version "3.33.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.33.3.tgz#3c644a323f0f533a0d360e9191e37f7fc059088d"
+  integrity sha512-lo0kOocUlLKmm6kv/FswQL8zbkH7mVsLJ/FULClOhv8WRVmKLVcs6XPNQAzstfeJTCHMyButEwG+z1kHxHoDZw==
 
 cross-spawn@^7.0.2:
   version "7.0.3"
@@ -3086,6 +3100,11 @@ flatted@^3.2.9:
   version "3.2.9"
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.9.tgz"
   integrity sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==
+
+follow-redirects@^1.15.0:
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.3.tgz#fe2f3ef2690afce7e82ed0b44db08165b207123a"
+  integrity sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -4870,6 +4889,14 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
+newsapi@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/newsapi/-/newsapi-2.4.1.tgz#0b19e22c1954cc86e2629a5e9995f547ac42f754"
+  integrity sha512-yw/aZBgDwNbNMqQ1V7XFKdW2jvL8Fh4qMiU0Awin87Rt6lbPnS8OuiLaL15Ws5X82/EXhzNf/djAlPHOWVgMJg==
+  dependencies:
+    core-js "^3.6.5"
+    node-fetch "^2.6.0"
+
 next-auth@^4.24.5:
   version "4.24.5"
   resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.24.5.tgz#1fd1bfc0603c61fd2ba6fd81b976af690edbf07e"
@@ -4955,7 +4982,7 @@ node-domexception@1.0.0:
   resolved "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
 
-node-fetch@^2.6.7, node-fetch@^2.6.9:
+node-fetch@^2.6.0, node-fetch@^2.6.7, node-fetch@^2.6.9:
   version "2.7.0"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.7.0.tgz"
   integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
@@ -5466,6 +5493,11 @@ protobufjs@^6.8.8:
     "@types/long" "^4.0.1"
     "@types/node" ">=13.7.0"
     long "^4.0.0"
+
+proxy-from-env@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 pump@^3.0.0:
   version "3.0.0"

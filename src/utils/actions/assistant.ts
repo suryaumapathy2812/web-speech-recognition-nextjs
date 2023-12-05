@@ -1,8 +1,9 @@
 'use server';
 
 import { OpenAI } from "openai";
-import { listEmail } from "./gmail";
+import { listEmail } from "../integrations/gmail";
 import { Run } from "openai/resources/beta/threads/runs/runs.mjs";
+import { getNewsByQuery, getNewsHeadLines } from "../integrations/news";
 
 const $OPEN_AI = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -95,6 +96,36 @@ async function handleToolCalls(threadId: string, runResponse: Run, toolCalls: an
           };
         }
         break;
+      case "getNewsHeadLines":
+        try {
+          const emails = await getNewsHeadLines({});
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ data: emails }),
+          };
+        } catch (error) {
+          console.error("Error in Fetch News by Headlines:", error);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ error: "Failed to fetch news by headlines" }),
+          };
+        }
+        break;
+      case "getNewsByQuery":
+        try {
+          const emails = await getNewsByQuery(args);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ data: emails }),
+          };
+        } catch (error) {
+          console.error("Error in Fetch News by Query:", error);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ error: "Failed to fetch news by query" }),
+          };
+        }
+        break;
       default:
         console.log("No function found for:", functionName);
         break;
@@ -119,36 +150,4 @@ async function listMessages(threadId: string) {
 }
 
 
-
 export { initializeThread, sendMessage, listMessages }
-
-// const json = [
-//   {
-//     "type": "function",
-//     "function": {
-//       "name": "listEmails",
-//       "parameters": {
-//         "type": "object",
-//         "required": ["query", "labelIds"],
-//         "properties": {
-//           "query": {
-//             "type": "string",
-//             "description": "The search query to filter emails.  The labels can be used in combination as well. MUST be provided inside an array. Example: is:unread, is:starred, is:important, has:attachment, has:drive, has:document, has:spreadsheet, has:presentation, has:youtube, has:photo, has:video, has:audio, has:chat, has:meeting, has:attachment, has:document, has:spreadsheet, has:presentation, has:youtube, has:photo, has:video, has:audio, has:chat, has:meeting, has:attachment, has:document, has:spreadsheet, has:presentation, has:youtube, has:photo, has:video, has:audio, has:chat, has:meeting, has:attachment, has:document, has:spreadsheet, has:presentation, has:youtube, has:photo, has:video, has:audio, has:chat, has:meeting, has:attachment, has:document, has:spreadsheet, has:presentation, has:youtube, has:photo, has:video, has:audio, has:chat, has:meeting"
-//           },
-//           "maxResults": {
-//             "type": "number",
-//             "description": "The maximum number of results to return"
-//           },
-//           "labelIds": {
-//             "type": "array",
-//             "description": "The label ids to search in",
-//             "items": {
-//               "type": "string",
-//               "description": "The label ids. Default is INBOX, MUST be provided inside an array Example: INBOX, UNREAD, STARRED, IMPORTANT, SENT, DRAFT"
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// ]
