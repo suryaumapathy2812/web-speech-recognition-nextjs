@@ -9,7 +9,7 @@ import useUserInputStore from '@/utils/stores/input.store';
 import useToggleInputStore, { ToggleInput } from '@/utils/stores/toggleInput.store';
 import { sendMessage as addMessageToThread } from "@/utils/actions/assistant";
 import { classNames } from '@/utils/utils';
-import { KeyboardIcon, MicIcon, AudioLines } from 'lucide-react';
+import { AudioLines, SendHorizonalIcon } from 'lucide-react';
 import MessageList from "./message-list";
 
 
@@ -65,6 +65,7 @@ function CombinedCore() {
       const result = list.item(0);
       const transcript = result.transcript;
       currentTranscriptRef.current = transcript;
+      setInput(transcript);
       if (isFinal) {
         await stopRecording();
       }
@@ -111,33 +112,62 @@ function CombinedCore() {
           <MessageList conversations={conversationList.toReversed()} />
         </div>
 
-        <div className="absolute bottom-0 bg-green-980 rounded-t-md w-full md:w-3/5 lg:w-2/4 p-4">
+        <div className="absolute bottom-0 bg-green-980 rounded-t-md w-full md:w-3/5 lg:w-2/4 p-4 pb-6">
           <form onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}>
             <div
               className='flex outline-none text-left text-lg bg-transparent rounded-md border-green-950 p-2 px-4 border-2 text-white w-full'
             >
-              <input
+              <textarea
+                rows={1}
                 id="text-input"
-                type="text"
                 autoFocus={true}
-                value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={disabled}
                 placeholder='Enter your message here.'
-                className="flex-1 bg-transparent outline-none text-white text-lg"
-              />
-
-              <button
-                // onClick={toggleInputMethod}
-                onClick={isRecording ? stopRecording : startRecording}
-                aria-label="toggleInputMethod"
+                value={input}
+                className="flex-1 bg-transparent outline-none rounded-md text-white text-base resize-none"
               >
-                <span className="relative flex">
-                  {isRecording && <AudioLines className="animate-ping absolute inline-flex h-full w-full rounded-full  opacity-75" />}
-                  <AudioLines className="relative inline-flex rounded-full" />
-                </span>
+              </textarea>
 
-              </button>
+              {
+                (!isRecording && input.length === 0) &&
+                <button
+                  className="ml-2 flex items-center justify-center rounded-full bg-green-950 w-10 h-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-950"
+                  onClick={isRecording ? stopRecording : startRecording}
+                  aria-label="toggleInputMethod"
+                >
+                  <AudioLines className="relative inline-flex rounded-full" />
+                </button>
+              }
+
+              {
+                (!isRecording && input.length > 0) &&
+                <button
+                  type="submit"
+                  className="ml-2 flex items-center justify-center rounded-full bg-green-950 w-10 h-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-950"
+                  aria-label="button-submit"
+                  disabled={disabled}
+                >
+                  <span className="relative flex">
+                    {/* {isRecording && <AudioLines className="animate-ping absolute inline-flex h-full w-full rounded-full  opacity-75" />} */}
+                    <SendHorizonalIcon className="relative inline-flex rounded-full" />
+                  </span>
+                </button>
+              }
+
+              {
+                (isRecording) &&
+                <button
+                  className="ml-2 flex items-center justify-center rounded-full bg-green-950 w-10 h-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-950"
+                  onClick={isRecording ? stopRecording : startRecording}
+                  aria-label="toggleInputMethod"
+                >
+                  <span className="relative flex">
+                    {isRecording && <AudioLines className="animate-ping absolute inline-flex h-full w-full rounded-full  opacity-75" />}
+                    <AudioLines className="relative inline-flex rounded-full" />
+                  </span>
+                </button>
+              }
 
             </div>
           </form>
