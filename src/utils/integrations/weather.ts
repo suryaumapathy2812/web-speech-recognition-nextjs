@@ -58,7 +58,6 @@ const getDailyWeatherForecast = async (coordinates: {
 }
 
 
-
 export const getWeather = async (args: {
   city?: string,
   coordinates: { latitude: number, longitude: number },

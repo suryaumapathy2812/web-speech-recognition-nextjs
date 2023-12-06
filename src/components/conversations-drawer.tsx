@@ -32,7 +32,7 @@ const ConversationsDrawer = () => {
             onClick={toggleSidebarStatus}
             type="button"
             className={classNames(
-              "flex items-center rounded-md px-2.5 py-1.5 text-sm text-black font-bold hover:border-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              "flex items-center rounded-md px-2.5 py-1.5 text-sm text-white font-bold hover:border-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             )}
           >
             Conversation

@@ -33,3 +33,7 @@ body {
       transparent,
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
+
+.bg-green-980{
+  background-color: #001f0d;
+}

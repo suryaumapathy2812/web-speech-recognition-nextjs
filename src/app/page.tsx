@@ -5,6 +5,7 @@ import { classNames } from '@/utils/utils';
 import { Playfair_Display } from 'next/font/google'
 import { Mic, Keyboard } from 'lucide-react';
 import { useEffect } from 'react';
+import CombinedCore from '@/components/core';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -38,7 +39,7 @@ function Home() {
     <>
       <main className="bg-gray-100 text-black flex flex-col md:flex-row h-screen justify-evenly">
 
-        {
+        {/* {
           ConversationTypes.map((_c, i) => (
             <Link
               key={i}
@@ -55,7 +56,9 @@ function Home() {
               </div>
             </Link>
           ))
-        }
+        } */}
+
+        <CombinedCore />
 
       </main>
     </>
