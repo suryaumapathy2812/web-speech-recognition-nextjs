@@ -43,4 +43,7 @@ next-env.d.ts
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
 
+
+# CUSTOM FILES
 functions.json
+prompt.md

@@ -4,6 +4,8 @@ import { OpenAI } from "openai";
 import { listEmail } from "../integrations/gmail";
 import { Run } from "openai/resources/beta/threads/runs/runs.mjs";
 import { getNewsByQuery, getNewsHeadLines } from "../integrations/news";
+import { getWeather } from "../integrations/weather";
+import { getLocation } from "../integrations/location";
 
 const $OPEN_AI = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -49,6 +51,7 @@ async function waitForRunCompletion(threadId: string) {
   let activeOrPendingRun = runs.data.find(run => run.status === 'queued' || run.status === 'in_progress' || run.status === 'requires_action');
 
   while (activeOrPendingRun) {
+    console.log("Run status:", activeOrPendingRun.status)
     // If the run requires action, process it before continuing
     if (activeOrPendingRun.status === 'requires_action') {
       await processRunActions(threadId, activeOrPendingRun);
@@ -79,6 +82,9 @@ async function handleToolCalls(threadId: string, runResponse: Run, toolCalls: an
     const functionName = toolCall.function.name;
     const args = JSON.parse(toolCall.function.arguments);
     let functionCallResponse;
+
+    console.log("Function name:", functionName)
+    console.log("Function args:", args)
 
     switch (functionName) {
       case "listEmails":
@@ -123,6 +129,36 @@ async function handleToolCalls(threadId: string, runResponse: Run, toolCalls: an
           functionCallResponse = {
             tool_call_id: toolCall.id,
             output: JSON.stringify({ error: "Failed to fetch news by query" }),
+          };
+        }
+        break;
+      case 'getWeather':
+        try {
+          const weather = await getWeather(args);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ data: weather }),
+          };
+        } catch (error) {
+          console.error("Error in Fetch Weather:", error);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ error: "Failed to fetch weather" }),
+          };
+        }
+        break;
+      case 'getLocation':
+        try {
+          const weather = await getLocation(args);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ data: weather }),
+          };
+        } catch (error) {
+          console.error("Error in Fetch Weather:", error);
+          functionCallResponse = {
+            tool_call_id: toolCall.id,
+            output: JSON.stringify({ error: "Failed to fetch weather" }),
           };
         }
         break;

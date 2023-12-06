@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { objectToQueryString } from '../utils';
 
 export type NewsArticle = {
   source: {
@@ -29,14 +30,6 @@ export type NewsQuery = {
   sortBy?: string, // relevancy, popularity, publishedAt
 }
 
-
-function objectToQueryString(obj: any) {
-  const keys = Object.keys(obj);
-  const keyValuePairs = keys.map(key => {
-    return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);
-  });
-  return keyValuePairs.join('&');
-}
 
 const NEW_API_URL = 'https://newsapi.org/v2/';
 

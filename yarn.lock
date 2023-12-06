@@ -5179,6 +5179,11 @@ openid-client@^5.2.1, openid-client@^5.4.0:
     object-hash "^2.2.0"
     oidc-token-hash "^5.0.3"
 
+openweather-api-node@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/openweather-api-node/-/openweather-api-node-3.1.2.tgz#863c96ab58989f9ecf83938af40df4b1b168a0af"
+  integrity sha512-PPV1SrEMVi96n23c+si0SbiFD0xn5RyasOm/NVuSaV8E7YF4XtJRxTzLmbB0CjD/i5MxrjQ9x9DFNrl423XGKg==
+
 optionator@^0.9.3:
   version "0.9.3"
   resolved "https://registry.npmjs.org/optionator/-/optionator-0.9.3.tgz"
