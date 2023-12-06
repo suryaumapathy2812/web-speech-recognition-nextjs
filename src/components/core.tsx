@@ -10,6 +10,7 @@ import useToggleInputStore, { ToggleInput } from '@/utils/stores/toggleInput.sto
 import { sendMessage as addMessageToThread } from "@/utils/actions/assistant";
 import { classNames } from '@/utils/utils';
 import { KeyboardIcon, MicIcon, AudioLines } from 'lucide-react';
+import MessageList from "./message-list";
 
 
 const playfair = Playfair({
@@ -37,7 +38,7 @@ function CombinedCore() {
 
   // Shared states and effects
   const { userSession } = useUserSessionStore();
-  const { lastMessage, syncMessages } = useConversationStore();
+  const { lastMessage, syncMessages, conversationList } = useConversationStore();
   const { input, setInput, disabled, setDisabled } = useUserInputStore();
   const { toggleInput, setToggleInput } = useToggleInputStore();
 
@@ -106,40 +107,41 @@ function CombinedCore() {
     <>
       <div className={classNames("relative flex flex-col justify-center items-center h-screen w-screen bg-green-950 text-white ")}>
 
-        {toggleInput == ToggleInput.TEXT && (
+        <div className='overflow-y-auto flex-1 w-full md:w-4/5 lg:w-2/5 mb-28 no-scrollbar px-4 mt-10'>
+          <MessageList conversations={conversationList.toReversed()} />
+        </div>
 
-          <div className="absolute bottom-0 bg-green-980 rounded-t-md w-full md:w-3/5 lg:w-2/4 p-4">
-            <form onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}>
-              <div
-                className='flex outline-none text-left text-lg bg-transparent rounded-md border-green-950 p-2 px-4 border-2 text-white w-full'
+        <div className="absolute bottom-0 bg-green-980 rounded-t-md w-full md:w-3/5 lg:w-2/4 p-4">
+          <form onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}>
+            <div
+              className='flex outline-none text-left text-lg bg-transparent rounded-md border-green-950 p-2 px-4 border-2 text-white w-full'
+            >
+              <input
+                id="text-input"
+                type="text"
+                autoFocus={true}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                disabled={disabled}
+                placeholder='Enter your message here.'
+                className="flex-1 bg-transparent outline-none text-white text-lg"
+              />
+
+              <button
+                // onClick={toggleInputMethod}
+                onClick={isRecording ? stopRecording : startRecording}
+                aria-label="toggleInputMethod"
               >
-                <input
-                  id="text-input"
-                  type="text"
-                  autoFocus={true}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  disabled={disabled}
-                  placeholder='Enter your message here.'
-                  className="flex-1 bg-transparent outline-none text-white text-lg"
-                />
+                <span className="relative flex">
+                  {isRecording && <AudioLines className="animate-ping absolute inline-flex h-full w-full rounded-full  opacity-75" />}
+                  <AudioLines className="relative inline-flex rounded-full" />
+                </span>
 
-                <button
-                  // onClick={toggleInputMethod}
-                  onClick={isRecording ? stopRecording : startRecording}
-                >
-                  <span className="relative flex">
-                    {isRecording && <AudioLines className="animate-ping absolute inline-flex h-full w-full rounded-full  opacity-75" />}
-                    <AudioLines className="relative inline-flex rounded-full" />
-                  </span>
+              </button>
 
-                </button>
-
-              </div>
-            </form>
-          </div>
-
-        )}
+            </div>
+          </form>
+        </div>
 
       </div>
     </>
