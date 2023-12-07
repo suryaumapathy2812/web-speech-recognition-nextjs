@@ -50,7 +50,7 @@ const ConversationsDrawer = () => {
           <div className={classNames(inter.className, 'absolute flex flex-col right-0 h-screen overflow-y-auto bg-green-950 z-20 p-4 shadow-md', sidebarStatus ? 'w-screen md:w-2/6 lg:w-5/12 min-h-screen  ' : 'hidden')}>
 
             <div className='flex flex-row justify-between'>
-              <h1 className={classNames(playfair.className, 'text-center text-2xl  text-white')}> Conversation </h1>
+              <h1 className={classNames('font-playfair text-center text-2xl  text-white')}> Conversation </h1>
               <button
                 onClick={toggleSidebarStatus}
                 type="button"

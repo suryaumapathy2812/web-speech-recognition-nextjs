@@ -1,5 +1,3 @@
-/** @type {import('next').NextConfig} */
-
 const withPWA = require('next-pwa');
 
 const nextConfig = {
@@ -9,9 +7,8 @@ const nextConfig = {
     skipWaiting: true,
   }),
   experimental: {
-    forceSwcTransforms: true,
+    serverlessFunctionTimeout: 120 // Set your desired timeout in seconds
   },
-
 }
 
 module.exports = nextConfig

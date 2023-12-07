@@ -1,8 +1,7 @@
+'use client';
+
 // Import necessary hooks and components
 import { useEffect, useRef, useState } from "react";
-import MarkdownPreview from '@uiw/react-markdown-preview';
-import { Playfair, Inter } from 'next/font/google';
-import { DotLoader } from 'react-spinners';
 import useConversationStore from "@/utils/stores/conversation.store";
 import useUserSessionStore from '@/utils/stores/session.store';
 import useUserInputStore from '@/utils/stores/input.store';
@@ -11,20 +10,6 @@ import { sendMessage as addMessageToThread } from "@/utils/actions/assistant";
 import { classNames } from '@/utils/utils';
 import { AudioLines, SendHorizonalIcon } from 'lucide-react';
 import MessageList from "./message-list";
-
-
-const playfair = Playfair({
-  subsets: ['latin'],
-  display: 'swap',
-  adjustFontFallback: false
-});
-const inter = Inter(
-  {
-    subsets: ['latin'],
-    display: 'swap',
-    adjustFontFallback: false
-  }
-);
 
 
 function CombinedCore() {

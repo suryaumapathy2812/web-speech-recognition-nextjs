@@ -5,16 +5,8 @@ import { classNames } from "@/utils/utils";
 import useUserSessionStore from "@/utils/stores/session.store";
 import { sendMessage as addMessageToThread } from "@/utils/actions/assistant"
 import useConversationStore from "@/utils/stores/conversation.store";
-import { Inter } from "next/font/google";
 import MarkdownPreview from '@uiw/react-markdown-preview';
 
-const inter = Inter(
-  {
-    subsets: ['latin'],
-    display: 'swap',
-    adjustFontFallback: false
-  }
-)
 
 function Core() {
 
@@ -98,7 +90,7 @@ function Core() {
 
   return (
     <>
-      <div
+      <div suppressHydrationWarning={true}
         className={classNames(
           "relative flex flex-col justify-center items-center h-full cursor-pointer",
           !isRecording ? 'bg-white text-green-950' : 'bg-green-950 text-white'
@@ -122,7 +114,7 @@ function Core() {
           (!isRecording) &&
           <p
             suppressHydrationWarning={true}
-            className={classNames("mt-4 rounded-md text-center bottom-20 font-medium p-4 w-screen md:w-3/6", inter.className)}>
+            className={classNames("mt-4 rounded-md text-center bottom-20 font-medium p-4 w-screen md:w-3/6 font-inter")}>
             {/* {response} */}
 
             <MarkdownPreview
@@ -136,7 +128,7 @@ function Core() {
 
         {
           (isRecording) &&
-          <p className={classNames("mt-4 rounded-md text-center bottom-20 font-medium p-4 w-screen md:w-3/6", inter.className)}>
+          <p className={classNames("mt-4 rounded-md text-center bottom-20 font-medium p-4 w-screen md:w-3/6 font-inter")}>
             {currentTranscriptRef.current}
           </p>
         }

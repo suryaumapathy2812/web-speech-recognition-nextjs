@@ -1,17 +1,5 @@
-'use client'
-
-import Link from 'next/link'
-import { classNames } from '@/utils/utils';
-import { Playfair_Display } from 'next/font/google'
 import { Mic, Keyboard } from 'lucide-react';
-import { useEffect } from 'react';
 import CombinedCore from '@/components/core';
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  display: 'swap',
-  adjustFontFallback: false
-})
 
 const ConversationTypes = [
   {
@@ -25,6 +13,7 @@ const ConversationTypes = [
     icon: Mic
   },
 ]
+
 function Home() {
 
   // useEffect(() => {
@@ -46,7 +35,7 @@ function Home() {
               href={"/" + _c.path}
               className='flex-1 w-full flex justify-center items-center hover:bg-green-950 hover:text-white'
             >
-              <div className={classNames(playfair.className, 'rounded-md border-gray-500 p-4  flex flex-col justify-center items-center')}>
+              <div className={classNames('font-playfair rounded-md border-gray-500 p-4  flex flex-col justify-center items-center')}>
 
                 <_c.icon className='w-6 h-6 mb-2' />
 
