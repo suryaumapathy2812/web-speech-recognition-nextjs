@@ -7,7 +7,6 @@ const nextConfig = {
     skipWaiting: true,
   }),
   experimental: {
-    serverlessFunctionTimeout: 120 // Set your desired timeout in seconds
   },
 }
 
