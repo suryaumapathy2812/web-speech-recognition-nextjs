@@ -49,3 +49,7 @@ export default async function RootLayout({
     </html>
   )
 }
+
+
+export const maxDuration = 120; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
