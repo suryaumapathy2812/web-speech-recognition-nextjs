@@ -164,3 +164,6 @@ function CombinedCore() {
 }
 
 export default CombinedCore;
+
+
+export const maxDuration = 300;
